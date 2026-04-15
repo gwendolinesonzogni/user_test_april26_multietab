@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayFit – Tableau de bord</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --color-brand: #4040f2;
+    --color-brand-light: #ebe9fe;
+    --color-surface: #ffffff;
+    --color-surface-low: #f5f6f9;
+    --color-surface-mid: #f0f0f3;
+    --color-border: #e0e5eb;
+    --color-border-light: #f0f0f3;
+    --color-text-primary: #030e1d;
+    --color-text-secondary: #4a5568;
+    --color-text-tertiary: #8793a1;
+    --color-green: #00875a;
+    --color-green-bg: #e3fcef;
+    --color-orange: #ff8b00;
+    --color-orange-bg: #fff4e5;
+    --color-red: #de350b;
+    --color-red-bg: #ffebe6;
+    --color-blue-bg: #deebff;
+    --color-blue: #0052cc;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xl: 12px;
+    --shadow-sm: 0 1px 2px rgba(4,32,64,0.04);
+    --shadow-md: 0 2px 8px rgba(4,32,64,0.08);
+    --font: 'Inter', sans-serif;
+  }
+
+  body {
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    background: var(--color-surface-low);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* ─── UTILITY BAR ──────────────────────────────── */
+  .utility-bar {
+    height: 60px;
+    background: white;
+    border-bottom: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+    gap: 12px;
+  }
+  .utility-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-brand);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 30px;
+    height: 30px;
+    background: var(--color-brand);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .logo-text { color: var(--color-text-primary); }
+  .divider-v { width: 1px; height: 16px; background: #d4dae2; border-radius: 30px; }
+  .company-label { font-weight: 500; font-size: 16px; color: var(--color-text-primary); }
+
+  .utility-bar-right { display: flex; align-items: center; gap: 24px; }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-surface-low);
+    border-radius: var(--radius-lg);
+    padding: 8px 12px;
+    width: 300px;
+    cursor: text;
+  }
+  .search-bar svg { color: var(--color-text-tertiary); flex-shrink: 0; }
+  .search-bar span { color: var(--color-text-tertiary); font-size: 14px; }
+  .btn-copilot {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: linear-gradient(108deg, rgba(225,219,253,0.1), rgba(197,229,253,0.1), rgba(166,243,199,0.1));
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font);
+    transition: background 0.15s;
+  }
+  .btn-copilot:hover { background: linear-gradient(108deg, rgba(225,219,253,0.25), rgba(197,229,253,0.2)); }
+  .icon-btn { background: none; border: none; cursor: pointer; color: var(--color-text-secondary); display: flex; align-items: center; justify-content: center; padding: 2px; border-radius: 4px; }
+  .icon-btn:hover { background: var(--color-surface-low); }
+  .avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--color-brand-light);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 14px; color: var(--color-brand);
+    cursor: pointer;
+    position: relative;
+  }
+
+  /* ─── LAYOUT ──────────────────────────────── */
+  .app-layout { display: flex; flex: 1; }
+
+  /* ─── SIDEBAR ──────────────────────────────── */
+  .sidebar {
+    width: 296px;
+    min-height: calc(100vh - 60px);
+    background: white;
+    border-right: 1px solid var(--color-border-light);
+    padding: 16px 12px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    transition: background 0.1s;
+    text-decoration: none;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--color-surface-low); color: var(--color-text-primary); }
+  .nav-item.active { background: var(--color-brand-light); color: var(--color-brand); font-weight: 500; }
+  .nav-item svg { flex-shrink: 0; }
+  .nav-group { margin-bottom: 4px; }
+  .nav-sub { padding-left: 36px; font-size: 13px; }
+
+  /* ─── MAIN CONTENT ──────────────────────────────── */
+  .main-content {
+    flex: 1;
+    padding: 40px;
+    max-width: 1144px;
+    overflow: hidden;
+  }
+  .page-title { font-size: 24px; font-weight: 600; margin-bottom: 24px; color: var(--color-text-primary); }
+
+  /* ─── TILE GRID ──────────────────────────────── */
+  .tiles-grid { display: flex; flex-direction: column; gap: 16px; }
+
+  /* ─── CARD / TILE ──────────────────────────────── */
+  .tile {
+    background: white;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border-light);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .tile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .tile-title { font-size: 16px; font-weight: 600; color: var(--color-text-primary); }
+  .tile-body { padding: 24px 32px; }
+
+  /* ─── PAYROLL TIMELINE TILE ──────────────────────────────── */
+  .payroll-tile .tile-body { padding: 24px 32px; }
+  .payroll-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .payroll-company { display: flex; flex-direction: column; gap: 8px; }
+  .payroll-company-name { font-size: 16px; font-weight: 600; }
+  .payroll-date { font-size: 13px; color: var(--color-text-tertiary); }
+  .progress-bar { height: 8px; background: var(--color-surface-mid); border-radius: 4px; overflow: hidden; margin-top: 4px; }
+  .progress-fill { height: 100%; background: var(--color-brand); border-radius: 4px; transition: width 0.5s ease; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-blue { background: var(--color-blue-bg); color: var(--color-blue); }
+  .badge-green { background: var(--color-green-bg); color: var(--color-green); }
+  .badge-orange { background: var(--color-orange-bg); color: var(--color-orange); }
+  .badge-red { background: var(--color-red-bg); color: var(--color-red); }
+  .badge-gray { background: #f0f0f3; color: #4a5568; }
+  .badge-purple { background: #ebe9fe; color: #4040f2; }
+
+  .payroll-cta { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .payroll-cta .badge { align-self: flex-start; }
+  .payroll-cta-title { font-size: 16px; font-weight: 600; }
+  .payroll-cta-sub { font-size: 13px; color: var(--color-text-tertiary); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-family: var(--font);
+    transition: filter 0.15s, transform 0.1s;
+  }
+  .btn:hover { filter: brightness(0.95); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--color-brand); color: white; }
+  .btn-secondary { background: white; color: var(--color-text-primary); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); }
+  .btn-ghost { background: transparent; color: var(--color-brand); }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  .btn-danger { background: white; color: var(--color-red); border: 1px solid var(--color-red); }
+
+  /* ─── TWO-COL ROW ──────────────────────────────── */
+  .two-col-row { display: grid; grid-template-columns: 614fr 443fr; gap: 16px; }
+
+  /* ─── ABSENCES TILE ──────────────────────────────── */
+  .collab-list { display: flex; flex-direction: column; gap: 0; }
+  .group-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--color-text-tertiary); padding: 12px 0 8px; }
+  .collab-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .collab-item:last-child { border-bottom: none; }
+  .collab-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px; flex-shrink: 0;
+  }
+  .collab-info { flex: 1; }
+  .collab-name { font-size: 14px; font-weight: 500; }
+  .collab-company { font-size: 12px; color: var(--color-text-tertiary); }
+  .collab-meta { text-align: right; }
+  .collab-dates { font-size: 12px; color: var(--color-text-tertiary); }
+
+  .link { color: var(--color-brand); font-size: 14px; font-weight: 500; text-decoration: none; cursor: pointer; }
+  .link:hover { text-decoration: underline; }
+
+  /* ─── REQUESTS TILE ──────────────────────────────── */
+  .segmented-group {
+    display: flex;
+    background: var(--color-surface-low);
+    border-radius: var(--radius-md);
+    padding: 3px;
+    gap: 2px;
+  }
+  .seg-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font);
+    color: var(--color-text-secondary);
+    transition: background 0.15s, color 0.15s;
+  }
+  .seg-btn.active { background: white; color: var(--color-text-primary); box-shadow: var(--shadow-sm); }
+
+  .request-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .request-item:last-child { border-bottom: none; }
+  .request-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .request-person { display: flex; align-items: center; gap: 12px; }
+  .request-name { font-size: 14px; font-weight: 500; }
+  .request-company { font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px; }
+  .request-amount { font-size: 16px; font-weight: 600; color: var(--color-text-primary); }
+  .request-days { font-size: 16px; font-weight: 600; }
+  .request-dates { font-size: 13px; color: var(--color-text-tertiary); padding-left: 52px; }
+  .request-actions { display: flex; gap: 8px; padding-left: 52px; flex-wrap: wrap; }
+
+  /* ─── EVENTS TILE ──────────────────────────────── */
+  .event-section-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .event-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .event-item:last-child { border-bottom: none; }
+  .event-illustration {
+    width: 72px; height: 72px;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-low);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .event-info { flex: 1; }
+  .event-name { font-size: 14px; font-weight: 500; }
+  .event-company { display: inline-flex; }
+  .event-type { font-size: 13px; color: var(--color-text-tertiary); margin-top: 4px; }
+  .event-date { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+
+  /* ─── DISCOVERY CARDS ──────────────────────────────── */
+  .discovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .discovery-card {
+    background: var(--color-surface-low);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: 1px solid transparent;
+  }
+  .discovery-card:hover { background: white; border-color: var(--color-border); box-shadow: var(--shadow-sm); }
+  .discovery-card.large { grid-column: span 1; grid-row: span 2; flex-direction: column; }
+  .discovery-img { width: 80px; height: 80px; border-radius: var(--radius-md); object-fit: cover; background: #e0e5eb; flex-shrink: 0; }
+  .discovery-img.large { width: 100%; height: 140px; }
+  .discovery-tag { font-size: 11px; font-weight: 600; color: var(--color-brand); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+  .discovery-card-title { font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 4px; }
+  .discovery-card-desc { font-size: 13px; color: var(--color-text-tertiary); line-height: 1.4; }
+  .discovery-card-meta { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 6px; }
+
+  /* ─── TOOLTIP / HOVER ──────────────────────────────── */
+  [data-tooltip] { position: relative; }
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #030e1d;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  /* ─── TOAST ──────────────────────────────── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #030e1d;
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ─── MODAL OVERLAY ──────────────────────────────── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3,14,29,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    width: 480px;
+    max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(3,14,29,0.15);
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.2s;
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+  .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .modal-sub { font-size: 14px; color: var(--color-text-tertiary); margin-bottom: 24px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+  /* ─── SCROLLBAR ──────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4dae2; border-radius: 3px; }
+
+  /* ─── ANIMATIONS ──────────────────────────────── */
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .tile { animation: fadeSlideIn 0.3s ease both; }
+  .tile:nth-child(1) { animation-delay: 0.05s; }
+  .tile:nth-child(2) { animation-delay: 0.1s; }
+  .tile:nth-child(3) { animation-delay: 0.15s; }
+  .tile:nth-child(4) { animation-delay: 0.2s; }
+
+  .notification-dot {
+    width: 8px; height: 8px;
+    background: var(--color-red);
+    border-radius: 50%;
+    position: absolute;
+    top: -1px; right: -1px;
+    border: 2px solid white;
+  }
+
+  /* ─── HAMBURGER ──────────────────────────────── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px; height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+  }
+  .hamburger:hover { background: var(--color-surface-low); }
+  .hamburger span {
+    display: block;
+    width: 18px; height: 2px;
+    background: var(--color-text-primary);
+    border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* sidebar overlay for mobile */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(3,14,29,0.35);
+    z-index: 90;
+  }
+  .sidebar-overlay.open { display: block; }
+
+  /* ─── RESPONSIVE ──────────────────────────────── */
+
+  /* Tablet: ≤ 1024px */
+  @media (max-width: 1024px) {
+    .sidebar { width: 240px; padding: 12px 8px; }
+    .main-content { padding: 24px; }
+    .two-col-row { grid-template-columns: 1fr; }
+    .payroll-grid { grid-template-columns: 1fr; gap: 20px; }
+    .discovery-grid { grid-template-columns: 1fr 1fr; }
+    .search-bar { width: 220px; }
+  }
+
+  /* Mobile: ≤ 768px */
+  @media (max-width: 768px) {
+    .hamburger { display: flex; }
+    .search-bar { display: none; }
+    .btn-copilot span { display: none; }
+    .btn-copilot { padding: 8px; }
+
+    .sidebar {
+      position: fixed;
+      left: -296px;
+      top: 60px;
+      width: 280px;
+      height: calc(100vh - 60px);
+      z-index: 95;
+      transition: left 0.25s ease;
+      box-shadow: var(--shadow-md);
+    }
+    .sidebar.open { left: 0; }
+
+    .main-content { padding: 16px; max-width: 100%; }
+    .tile-head { padding: 16px 20px; }
+    .tile-body { padding: 16px 20px; }
+    .two-col-row { grid-template-columns: 1fr; gap: 12px; }
+    .payroll-grid { grid-template-columns: 1fr; gap: 16px; }
+    .discovery-grid { grid-template-columns: 1fr; }
+    .discovery-card.large { grid-row: span 1; }
+    .request-actions { padding-left: 0; }
+    .request-dates { padding-left: 0; }
+    .page-title { font-size: 20px; }
+  }
+
+  /* Small mobile: ≤ 480px */
+  @media (max-width: 480px) {
+    .utility-bar { padding: 0 12px; gap: 8px; }
+    .company-label { display: none; }
+    .divider-v { display: none; }
+    .utility-bar-right { gap: 12px; }
+    .main-content { padding: 12px; }
+    .tile-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .segmented-group { flex-wrap: wrap; }
+    .seg-btn { padding: 5px 10px; font-size: 12px; }
+    .collab-item { flex-wrap: wrap; }
+  }
+
+  /* ─── NAV COLLAPSIBLE GROUPS ─── */
+  .nav-sub-group {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.28s ease, opacity 0.2s ease;
+    opacity: 0;
+  }
+  .nav-sub-group.open {
+    max-height: 600px;
+    opacity: 1;
+  }
+  .nav-chevron {
+    margin-left: auto;
+    flex-shrink: 0;
+    transform: rotate(-90deg);
+    transition: transform 0.22s ease;
+  }
+  .nav-chevron.open {
+    transform: rotate(0deg);
+  }
+  .nav-sub {
+    padding-left: 40px !important;
+    font-size: 13px !important;
+    color: var(--color-text-tertiary, #8793a1) !important;
+    font-weight: 400 !important;
+  }
+  .nav-sub:hover {
+    color: var(--color-text-primary, #030e1d) !important;
+    background: var(--color-surface-low, #f5f6f9) !important;
+  }
+</style>
+</head>
+<body>
+
+<!-- UTILITY BAR -->
+<header class="utility-bar">
+  <div class="utility-bar-left">
+    <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a class="logo" href="#">
+      <div class="logo-icon">P</div>
+      <span class="logo-text">PayFit</span>
+    </a>
+    <div class="divider-v"></div>
+    <span class="company-label">Acme Corp</span>
+  </div>
+  <div class="utility-bar-right">
+    <div class="search-bar">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#8793a1" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#8793a1" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Rechercher...</span>
+    </div>
+    <button class="btn-copilot" onclick="showToast('✨ Copilot activé')">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#4040f2" stroke-width="1.2"/><path d="M5 8h6M8 5v6" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Demander au Copilot</span>
+    </button>
+    <button class="icon-btn" data-tooltip="Messages">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6l-3 3V5a1 1 0 0 1 1-1z" stroke="#4a5568" stroke-width="1.5" fill="none"/><circle cx="10" cy="9" r="1" fill="#4a5568"/><circle cx="7" cy="9" r="1" fill="#4a5568"/><circle cx="13" cy="9" r="1" fill="#4a5568"/></svg>
+    </button>
+    <button class="icon-btn" data-tooltip="Paramètres" onclick="window.location='settings-prototype-fr.html'">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" stroke="#4a5568" stroke-width="1.5"/><path d="M16.2 10c0-.3 0-.6-.1-.9l1.9-1.5-1.8-3.1-2.2.9c-.5-.4-1-.7-1.6-.9L12 2H8l-.4 2.5c-.6.2-1.1.5-1.6.9l-2.2-.9L2 7.6l1.9 1.5c-.1.3-.1.6-.1.9s0 .6.1.9L2 12.4l1.8 3.1 2.2-.9c.5.4 1 .7 1.6.9L8 18h4l.4-2.5c.6-.2 1.1-.5 1.6-.9l2.2.9 1.8-3.1-1.9-1.5c.1-.3.1-.6.1-.9z" stroke="#4a5568" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="icon-btn" data-tooltip="Notifications" style="position:relative">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 0 1 6 6v3l2 2v1H2v-1l2-2V8a6 6 0 0 1 6-6z" stroke="#4a5568" stroke-width="1.5" fill="none"/><path d="M8 15a2 2 0 0 0 4 0" stroke="#4a5568" stroke-width="1.5"/></svg>
+      <span class="notification-dot"></span>
+    </button>
+    <div class="avatar" data-tooltip="Thomas">TM</div>
+  </div>
+</header>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- APP LAYOUT -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+
+    <div class="nav-group">
+      <a class="nav-item active" href="dashboard-prototype-fr.html">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10L10 3l7 7" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8.5V17h4v-4h2v4h4V8.5" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tableau de bord
+
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="7" r="3" stroke="#4a5568" stroke-width="1.5"/><path d="M2 17c0-3.31 2.686-6 6-6s6 2.69 6 6" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/><circle cx="15" cy="7" r="2.5" stroke="#4a5568" stroke-width="1.5"/><path d="M17 13c1.5.5 3 1.8 3 4" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Collaborateurs
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="employees-prototype-fr.html" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Liste des collaborateurs</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Nouvelles embauches</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Activité</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Absences</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Rémunération</a>
+        <a class="nav-item nav-sub" href="bonuses-prototype-fr.html" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Primes</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Avantages</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Performance et objectifs</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Accès et permissions</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="12" rx="2" stroke="#4a5568" stroke-width="1.5"/><path d="M6 5V4a4 4 0 0 1 8 0v1" stroke="#4a5568" stroke-width="1.5"/><path d="M10 11v2M8 12h4" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Paie
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="payroll-prototype-fr.html" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Vérifier et clôturer la paie</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Payer les collaborateurs</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Checklist post-paie</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="7" width="14" height="11" rx="1.5" stroke="#4a5568" stroke-width="1.5"/><path d="M7 7V5a3 3 0 0 1 6 0v2" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/><rect x="8" y="11" width="4" height="3" rx="1" stroke="#4a5568" stroke-width="1.2"/></svg>
+        Entreprise
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Journaux de paie</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Analytique et exports</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Soumissions HMRC</a>
+        <a class="nav-item nav-sub" href="company-policies-prototype-fr.html" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Politiques d'entreprise</a>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M6 2h8l4 4v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="#4a5568" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 2v4h4" stroke="#4a5568" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 9h4M8 13h6" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Documents
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Liste des documents</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Modèles de documents</a>
+        <a class="nav-item nav-sub" href="#" onclick="if(window.innerWidth<=768){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');document.getElementById('hamburger').classList.remove('open')}">Signature électronique</a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <h1 class="page-title">Bonjour Thomas 👋</h1>
+
+    <div class="tiles-grid">
+
+      <!-- PAYROLL TILE -->
+      <div class="tile payroll-tile">
+        <div class="tile-head">
+          <span class="tile-title">Vos paies de janvier</span>
+        </div>
+        <div class="tile-body">
+          <div class="payroll-grid">
+            <div style="display:flex;flex-direction:column;gap:20px;">
+              <div class="payroll-company">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="payroll-company-name">Bistrot du Marché</span>
+                  <span class="badge badge-blue">Paie en préparation</span>
+                </div>
+                <div class="payroll-date">Date de clôture le 27 janvier — dans 7 jours</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+              </div>
+              <div class="payroll-company">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="payroll-company-name">L'Assiette d'Or</span>
+                  <span class="badge badge-blue">Paie en préparation</span>
+                </div>
+                <div class="payroll-date">Date de clôture le 29 janvier — dans 9 jours</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:69%"></div></div>
+              </div>
+            </div>
+            <div class="payroll-cta">
+              <span class="badge badge-green">2 paies en préparation</span>
+              <div>
+                <div class="payroll-cta-title">Vous avez le temps de préparer vos paies</div>
+                <div class="payroll-cta-sub" style="margin-top:4px;">Collectez et saisissez les informations de paie de vos entreprises sur PayFit</div>
+              </div>
+              <button class="btn btn-primary" style="align-self:flex-start" onclick="showModal('payroll')">Gérer la paie</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO-COL ROW: Absences + Events -->
+      <div class="two-col-row">
+
+        <!-- ABSENCES TILE -->
+        <div class="tile">
+          <div class="tile-head">
+            <span class="tile-title">Qui est absent aujourd'hui?</span>
+            <a class="link" href="#" onclick="navigate(event,'calendar')">Calendrier</a>
+          </div>
+          <div class="tile-body" style="padding-top:12px;">
+            <div class="collab-list">
+              <div class="group-label">Aujourd'hui</div>
+              <div class="collab-item">
+                <div class="collab-avatar" style="background:#ffd470;color:#7c5800;">MT</div>
+                <div class="collab-info">
+                  <div class="collab-name">Max Thomson</div>
+                  <div class="collab-company">Bistro du Marché</div>
+                </div>
+                <div class="collab-meta">
+                  <span class="badge badge-red">Congé maladie</span>
+                  <div class="collab-dates" style="margin-top:4px;">Du 17 au 25 oct</div>
+                </div>
+              </div>
+              <div class="group-label" style="margin-top:8px;">À venir (30 jours)</div>
+              <div class="collab-item">
+                <div class="collab-avatar" style="background:#ffac99;color:#7c2600;">MT</div>
+                <div class="collab-info">
+                  <div class="collab-name">Max Thomson</div>
+                  <div class="collab-company">L'Assiette d'Or</div>
+                </div>
+                <div class="collab-meta">
+                  <span class="badge badge-green">Congés</span>
+                  <div class="collab-dates" style="margin-top:4px;">Du 4 au 21 oct</div>
+                </div>
+              </div>
+              <div class="collab-item">
+                <div class="collab-avatar" style="background:#c5e5fd;color:#0052cc;">JL</div>
+                <div class="collab-info">
+                  <div class="collab-name">Jérôme Lightbringer</div>
+                  <div class="collab-company">L'Assiette d'Or</div>
+                </div>
+                <div class="collab-meta">
+                  <span class="badge badge-orange">Absence</span>
+                  <div class="collab-dates" style="margin-top:4px;">Du 29 déc au 30 déc</div>
+                </div>
+              </div>
+              <div class="collab-item">
+                <div class="collab-avatar" style="background:#e3fcef;color:#00875a;">LB</div>
+                <div class="collab-info">
+                  <div class="collab-name">Lina Benalia</div>
+                  <div class="collab-company">Bistro du Marché</div>
+                </div>
+                <div class="collab-meta">
+                  <span class="badge badge-blue">RTT</span>
+                  <div class="collab-dates" style="margin-top:4px;">Du 10 au 12 nov</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVENTS TILE -->
+        <div class="tile">
+          <div class="tile-head">
+            <span class="tile-title">À l'agenda</span>
+          </div>
+          <div class="tile-body" style="padding-top:12px;">
+            <div class="event-section-label">Aujourd'hui</div>
+            <div class="event-item">
+              <div class="event-illustration">🎂</div>
+              <div class="event-info">
+                <div class="event-name">Jean Nguyen</div>
+                <span class="badge badge-gray" style="margin:4px 0;display:inline-block;">Bistro du Marché</span>
+                <div class="event-type">Anniversaire</div>
+              </div>
+            </div>
+            <div class="event-section-label" style="margin-top:12px;">À venir</div>
+            <div class="event-item">
+              <div class="event-illustration">📨</div>
+              <div class="event-info">
+                <div class="event-date">Lundi, 10 novembre</div>
+                <div class="event-name">Lina Benalia</div>
+                <span class="badge badge-gray" style="margin:4px 0;display:inline-block;">Bistro du Marché</span>
+                <div class="event-type">Fin de contrat</div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-illustration">🇫🇷</div>
+              <div class="event-info">
+                <div class="event-date">Mardi, 11 novembre</div>
+                <div class="event-name">Jour de l'Armistice</div>
+                <div class="event-type">Jours fériés</div>
+              </div>
+            </div>
+            <div class="event-item">
+              <div class="event-illustration">🎉</div>
+              <div class="event-info">
+                <div class="event-date">Vendredi, 17 septembre</div>
+                <div class="event-name">Jérôme Lightbringer</div>
+                <span class="badge badge-gray" style="margin:4px 0;display:inline-block;">L'Assiette d'Or</span>
+                <div class="event-type">Anniversaire d'entreprise · 3 ans</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end two-col-row -->
+
+      <!-- REQUESTS TILE -->
+      <div class="tile">
+        <div class="tile-head" style="flex-direction:column;align-items:flex-start;gap:16px;">
+          <span class="tile-title">10 demandes en attente</span>
+          <div class="segmented-group">
+            <button class="seg-btn active" onclick="filterRequests(this,'all')">Tous</button>
+            <button class="seg-btn" onclick="filterRequests(this,'expenses')">Frais</button>
+            <button class="seg-btn" onclick="filterRequests(this,'absence')">Absence</button>
+            <button class="seg-btn" onclick="filterRequests(this,'advance')">Avance</button>
+          </div>
+        </div>
+        <div class="tile-body" id="requests-body">
+          <div class="request-item" data-type="absence">
+            <div class="request-top">
+              <div class="request-person">
+                <div class="collab-avatar" style="background:#c5e5fd;color:#0052cc;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;position:relative;">
+                  JL
+                  <span style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;background:#4040f2;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="white" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </span>
+                </div>
+                <div>
+                  <div class="request-name">Jérôme Lightbringer</div>
+                  <div class="request-company">L'Assiette d'Or</div>
+                </div>
+              </div>
+              <div class="request-days">8 jours</div>
+            </div>
+            <div class="request-dates">Absence · Congés payés · 29 déc. 2026 – 30 déc. 2026</div>
+            <div class="request-actions">
+              <button class="btn btn-primary btn-sm" onclick="handleRequest(this,'confirm')">Confirmer</button>
+              <button class="btn btn-secondary btn-sm" onclick="handleRequest(this,'decline')">Refuser</button>
+              <button class="btn btn-ghost btn-sm" onclick="showModal('detail')">Voir détails</button>
+            </div>
+          </div>
+          <div class="request-item" data-type="expenses">
+            <div class="request-top">
+              <div class="request-person">
+                <div class="collab-avatar" style="background:#ffac99;color:#7c2600;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;position:relative;">
+                  JL
+                  <span style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;background:#4040f2;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="white" stroke-width="1.2"/><path d="M4 1v2M8 1v2M1 5h10" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </span>
+                </div>
+                <div>
+                  <div class="request-name">Jérôme Lightbringer</div>
+                  <div class="request-company">Bistro du Marché</div>
+                </div>
+              </div>
+              <div class="request-amount">110,99€</div>
+            </div>
+            <div class="request-dates">Note de frais · Restaurant client</div>
+            <div class="request-actions">
+              <button class="btn btn-primary btn-sm" onclick="handleRequest(this,'confirm')">Approuver</button>
+              <button class="btn btn-danger btn-sm" onclick="handleRequest(this,'decline')">Refuser</button>
+              <button class="btn btn-ghost btn-sm" onclick="showModal('detail')">Voir détails</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISCOVERY TILE -->
+      <div class="tile">
+        <div class="tile-head">
+          <span class="tile-title">Recommandé pour vous</span>
+        </div>
+        <div class="tile-body">
+          <div class="discovery-grid">
+            <div class="discovery-card" onclick="showModal('enps')">
+              <div class="discovery-img" style="background:linear-gradient(135deg,#ebe9fe,#c5e5fd);display:flex;align-items:center;justify-content:center;font-size:28px;">📊</div>
+              <div>
+                <div class="discovery-tag">Nouveau</div>
+                <div class="discovery-card-title">Sondage eNPS</div>
+                <div class="discovery-card-desc">Découvrez comment vos collaborateurs perçoivent votre entreprise.</div>
+                <button class="btn btn-ghost btn-sm" style="margin-top:8px;padding:0;">Essayer →</button>
+              </div>
+            </div>
+            <div class="discovery-card" onclick="showModal('reimbursement')">
+              <div class="discovery-img" style="background:linear-gradient(135deg,#e3fcef,#c5e5fd);display:flex;align-items:center;justify-content:center;font-size:28px;">💸</div>
+              <div>
+                <div class="discovery-tag">Nouveau</div>
+                <div class="discovery-card-title">Remboursement simplifié</div>
+                <div class="discovery-card-desc">Collectez les détails du contrat précédent, du salaire, des heures de travail, etc.</div>
+                <button class="btn btn-ghost btn-sm" style="margin-top:8px;padding:0;">Essayer →</button>
+              </div>
+            </div>
+            <div class="discovery-card large" onclick="showToast('Article ouvert')">
+              <div class="discovery-img large" style="background:linear-gradient(135deg,#fff4e5,#ebe9fe);display:flex;align-items:center;justify-content:center;font-size:48px;">📰</div>
+              <div>
+                <div class="discovery-card-meta">Lecture 3 min</div>
+                <div class="discovery-card-title" style="font-size:15px;">Changements fiscaux d'entreprise à venir en 2026. Ce que vous devez savoir.</div>
+                <div class="discovery-card-desc">Découvrez comment la nouvelle taxe aura un impact sur votre entreprise.</div>
+                <button class="btn btn-ghost btn-sm" style="margin-top:8px;padding:0;">Lire l'article →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end tiles-grid -->
+
+    <!-- FEEDBACK BAR -->
+    <div style="display:flex;align-items:center;gap:8px;margin-top:24px;padding-bottom:24px;color:var(--color-text-tertiary);font-size:13px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3h10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H5l-3 3V4a1 1 0 0 1 1-1z" stroke="#8793a1" stroke-width="1.2" fill="none"/></svg>
+      Avez-vous des commentaires ou des suggestions sur ce tableau de bord?
+      <a class="link" href="#" onclick="showModal('feedback')">Partagez-les avec nous</a>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-title" id="modal-title">Action</div>
+    <div class="modal-sub" id="modal-sub">Détail de l'action</div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModalDirect()">Annuler</button>
+      <button class="btn btn-primary" id="modal-cta" onclick="closeModalDirect()">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function navigate(e, page) {
+    e.preventDefault();
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    showToast('Navigation → ' + page);
+  }
+
+  const modals = {
+    payroll: { title: 'Gérer la paie', sub: 'Gérer la paie de vos établissements', cta: 'Lancer la paie' },
+    detail: { title: 'Détails de la demande', sub: 'Consulter les détails de cette demande', cta: 'Approuver' },
+    feedback: { title: 'Partager un avis', sub: 'Votre avis nous aide à améliorer le dashboard.', cta: 'Envoyer' },
+    enps: { title: 'Sondage eNPS', sub: 'Mesurez l\'engagement de vos collaborateurs via un sondage anonyme.', cta: 'Activer' },
+    reimbursement: { title: 'Remboursement simplifié', sub: 'Automatisez les remboursements de frais de vos employés.', cta: 'Essayer' },
+  };
+
+  function showModal(type) {
+    const m = modals[type] || { title: type, sub: '', cta: 'OK' };
+    document.getElementById('modal-title').textContent = m.title;
+    document.getElementById('modal-sub').textContent = m.sub;
+    document.getElementById('modal-cta').textContent = m.cta;
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+  }
+  function closeModalDirect() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  function handleRequest(btn, action) {
+    const item = btn.closest('.request-item');
+    item.style.transition = 'opacity 0.3s, transform 0.3s';
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(20px)';
+    setTimeout(() => item.remove(), 300);
+    showToast(action === 'confirm' ? '✅ Demande approuvée' : '❌ Demande refusée');
+  }
+
+  function filterRequests(btn, type) {
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.request-item').forEach(item => {
+      if (type === 'all' || item.dataset.type === type) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  // Keyboard: Escape closes modal
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModalDirect();
+  });
+
+  // ─── Sidebar toggle (mobile) ─────────────────────
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const hamburger = document.getElementById('hamburger');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+    hamburger.classList.toggle('open');
+  }
+  // Close sidebar on nav item click (mobile)
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const hamburger = document.getElementById('hamburger');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+        hamburger.classList.remove('open');
+      }
+    });
+  });
+
+  // ─── Nav group toggle ───────────────────────────
+  function toggleGroup(e, el) {
+    e.preventDefault();
+    e.stopPropagation();
+    var group = el.parentElement.querySelector('.nav-sub-group');
+    if (!group) return;
+    var isOpen = group.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.nav-sub-group').forEach(function(g) { g.classList.remove('open'); });
+    document.querySelectorAll('.nav-chevron').forEach(function(c) { c.classList.remove('open'); });
+    // If was closed, open it
+    if (!isOpen) {
+      group.classList.add('open');
+      var chev = el.querySelector('.nav-chevron');
+      if (chev) chev.classList.add('open');
+    }
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayFit – Politiques d'entreprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --brand: #4040f2; --brand-light: #ebe9fe; --brand-dark: #3030d4;
+    --surface: #ffffff; --surface-low: #f5f6f9; --surface-mid: #f0f0f3;
+    --border: #e0e5eb; --border-light: #f0f0f3;
+    --text-primary: #030e1d; --text-secondary: #4a5568; --text-tertiary: #8793a1;
+    --green: #00875a; --green-bg: #e3fcef;
+    --orange: #ff8b00; --orange-bg: #fff4e5;
+    --red: #de350b; --red-bg: #ffebe6;
+    --blue: #0052cc; --blue-bg: #deebff;
+    --r-sm: 6px; --r-md: 8px; --r-lg: 10px; --r-xl: 12px; --r-2xl: 16px;
+    --shadow-sm: 0 1px 2px rgba(4,32,64,0.04);
+    --shadow-md: 0 2px 8px rgba(4,32,64,0.08);
+    --shadow-lg: 0 4px 16px rgba(4,32,64,0.12);
+    --font: 'Inter', sans-serif;
+  }
+  body { font-family: var(--font); font-size: 14px; color: var(--text-primary); background: var(--surface-low); display: flex; flex-direction: column; min-height: 100vh; line-height: 1.5; }
+
+  /* ─── TOPBAR ─── */
+  .topbar { height: 60px; background: white; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); gap: 12px; }
+  .tl { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+  .logo-icon { width: 30px; height: 30px; background: var(--brand); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; }
+  .logo-text { font-weight: 600; font-size: 16px; color: var(--text-primary); }
+  .divv { width: 1px; height: 16px; background: #d4dae2; }
+  .co { font-weight: 500; font-size: 16px; }
+  .tr { display: flex; align-items: center; gap: 24px; }
+  .sp { display: flex; align-items: center; gap: 8px; background: var(--surface-low); border-radius: var(--r-lg); padding: 8px 12px; width: 300px; color: var(--text-tertiary); font-size: 14px; }
+  .bco { display: flex; align-items: center; gap: 4px; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--r-md); background: linear-gradient(108deg,rgba(225,219,253,.1),rgba(197,229,253,.1)); font: 500 14px var(--font); cursor: pointer; box-shadow: var(--shadow-sm); }
+  .ib { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 2px; border-radius: 4px; color: var(--text-secondary); position: relative; }
+  .ib:hover { background: var(--surface-low); }
+  .nd { width: 8px; height: 8px; background: var(--red); border-radius: 50%; position: absolute; top: -1px; right: -1px; border: 2px solid white; }
+  .av { width: 40px; height: 40px; border-radius: 50%; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font: 600 14px var(--font); color: var(--brand); cursor: pointer; }
+
+  /* ─── LAYOUT ─── */
+  .app { display: flex; flex: 1; }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar { width: 296px; background: white; border-right: 1px solid var(--border-light); padding: 16px 12px; flex-shrink: 0; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+  .nav-group { margin-bottom: 4px; }
+  .nav-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 400; color: var(--text-secondary); transition: background 0.1s; text-decoration: none; position: relative; }
+  .nav-item:hover { background: var(--surface-low); color: var(--text-primary); }
+  .nav-item.active { background: var(--brand-light); color: var(--brand); font-weight: 500; }
+  .nav-item svg { flex-shrink: 0; }
+  .nav-sub-group { overflow: hidden; max-height: 0; transition: max-height 0.28s ease, opacity 0.2s ease; opacity: 0; }
+  .nav-sub-group.open { max-height: 600px; opacity: 1; }
+  .nav-chevron { margin-left: auto; flex-shrink: 0; transform: rotate(-90deg); transition: transform 0.22s ease; }
+  .nav-chevron.open { transform: rotate(0deg); }
+  .nav-sub { padding-left: 40px !important; font-size: 13px !important; color: var(--text-tertiary) !important; font-weight: 400 !important; }
+  .nav-sub:hover { color: var(--text-primary) !important; background: var(--surface-low) !important; }
+
+  /* ─── MAIN ─── */
+  .main { flex: 1; padding: 40px; max-width: 1200px; }
+  .ph { margin-bottom: 8px; }
+  .pt { font-size: 28px; font-weight: 600; }
+  .ps { font-size: 16px; color: var(--text-secondary); margin-top: 8px; }
+
+  /* ─── TABS ─── */
+  .tabs { display: flex; border-bottom: 1px solid var(--border-light); margin: 16px 0 32px; }
+  .tab { padding: 10px 16px; font-size: 14px; font-weight: 500; color: var(--text-tertiary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; transition: color .15s; }
+  .tab:hover { color: var(--text-primary); }
+  .tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+  /* ─── ESTABLISHMENT PICKER ─── */
+  .estab-picker { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .estab-select-wrap { position: relative; }
+  .estab-select { appearance: none; background: white; border: 1px solid var(--border); border-radius: var(--r-md); padding: 10px 40px 10px 14px; font: 500 14px var(--font); color: var(--text-primary); cursor: pointer; min-width: 260px; box-shadow: var(--shadow-sm); }
+  .estab-select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(64,64,242,.08); }
+  .estab-select-arrow { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-tertiary); }
+  .estab-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--green); background: var(--green-bg); padding: 4px 10px; border-radius: 20px; }
+  .estab-badge svg { flex-shrink: 0; }
+
+  /* ─── SETTINGS SECTION ─── */
+  .settings-section { background: white; border-radius: var(--r-2xl); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); margin-bottom: 20px; overflow: hidden; animation: fadeUp .35s ease both; }
+  .settings-section:nth-child(2) { animation-delay: .06s; }
+  .settings-section:nth-child(3) { animation-delay: .12s; }
+  .settings-section:nth-child(4) { animation-delay: .18s; }
+  .settings-section:nth-child(5) { animation-delay: .24s; }
+
+  .section-header { padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); }
+  .section-title { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .section-title-icon { width: 32px; height: 32px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-actions { display: flex; align-items: center; gap: 8px; }
+
+  .section-body { padding: 0 24px; }
+  .section-body.collapsed { display: none; }
+
+  /* ─── SETTING ROW ─── */
+  .setting-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-light); gap: 16px; }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { width: 240px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+  .setting-value { flex: 1; font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .setting-value .sub { display: block; font-size: 12px; font-weight: 400; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* ─── EDIT MODE ─── */
+  .edit-overlay { display: none; }
+  .edit-overlay.active { display: block; }
+
+  .edit-row { display: none; }
+  .edit-row.active { display: flex; align-items: flex-start; gap: 12px; }
+  .edit-input { flex: 1; border: 1px solid var(--border); border-radius: var(--r-md); padding: 9px 12px; font: 14px var(--font); color: var(--text-primary); outline: none; }
+  .edit-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(64,64,242,.08); }
+  .edit-select { flex: 1; border: 1px solid var(--border); border-radius: var(--r-md); padding: 9px 12px; font: 14px var(--font); color: var(--text-primary); outline: none; background: white; }
+  .edit-select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(64,64,242,.08); }
+
+  /* ─── BUTTONS ─── */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: var(--r-md); font: 500 14px var(--font); cursor: pointer; border: none; transition: all .15s; white-space: nowrap; }
+  .btn:hover { filter: brightness(.95); }
+  .btn-primary { background: var(--brand); color: white; }
+  .btn-primary:hover { background: var(--brand-dark); }
+  .btn-secondary { background: white; color: var(--text-primary); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .btn-ghost { background: none; border: none; color: var(--brand); font: 500 13px var(--font); padding: 6px 10px; cursor: pointer; border-radius: var(--r-sm); }
+  .btn-ghost:hover { background: var(--brand-light); }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
+  .btn-danger { background: var(--red-bg); color: var(--red); border: 1px solid transparent; }
+  .btn-danger:hover { filter: brightness(.97); }
+
+  /* ─── COPY FROM MODAL ─── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(3,14,29,.4); display: flex; align-items: center; justify-content: center; z-index: 500; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: white; border-radius: var(--r-xl); padding: 32px; width: 520px; max-width: 90vw; box-shadow: 0 20px 60px rgba(3,14,29,.15); transform: scale(.96) translateY(8px); transition: transform .2s; }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+  .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .modal-subtitle { font-size: 14px; color: var(--text-tertiary); margin-bottom: 24px; line-height: 1.5; }
+  .modal-field { margin-bottom: 16px; }
+  .modal-field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-secondary); }
+  .modal-field select, .modal-field input { width: 100%; border: 1px solid var(--border); border-radius: var(--r-md); padding: 9px 12px; font: 14px var(--font); color: var(--text-primary); outline: none; background: white; }
+  .modal-field select:focus, .modal-field input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(64,64,242,.08); }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+  /* ─── COPY PREVIEW ─── */
+  .copy-preview { background: var(--surface-low); border-radius: var(--r-md); padding: 16px; margin-top: 16px; border: 1px solid var(--border-light); }
+  .copy-preview-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-tertiary); margin-bottom: 12px; }
+  .copy-preview-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+  .copy-preview-row .label { color: var(--text-tertiary); }
+  .copy-preview-row .value { font-weight: 500; color: var(--text-primary); }
+
+  /* ─── INFO BANNER ─── */
+  .info-banner { display: flex; align-items: flex-start; gap: 10px; background: var(--blue-bg); border-radius: var(--r-md); padding: 12px 16px; margin-bottom: 24px; font-size: 13px; color: var(--blue); line-height: 1.5; }
+  .info-banner svg { flex-shrink: 0; margin-top: 1px; }
+
+  /* ─── TOAST ─── */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: #030e1d; color: white; padding: 12px 20px; border-radius: var(--r-md); font: 500 14px var(--font); box-shadow: 0 4px 16px rgba(0,0,0,.2); z-index: 999; transform: translateY(80px); opacity: 0; transition: transform .3s, opacity .3s; display: flex; align-items: center; gap: 8px; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ─── EDITING STATE ─── */
+  .section-editing .setting-row { padding: 12px 0; }
+  .section-editing .setting-value { display: none; }
+  .section-editing .edit-row { display: flex; align-items: center; }
+  .edit-footer { display: none; padding: 16px 24px; border-top: 1px solid var(--border-light); background: var(--surface-low); gap: 8px; justify-content: flex-end; }
+  .section-editing + .edit-footer,
+  .edit-footer.active { display: flex; }
+
+  /* ─── HAMBURGER ─── */
+  .hmb { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 36px; height: 36px; background: none; border: none; cursor: pointer; padding: 4px; border-radius: var(--r-md); flex-shrink: 0; }
+  .hmb:hover { background: var(--surface-low); }
+  .hmb span { display: block; width: 18px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: transform .2s, opacity .2s; }
+  .hmb.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hmb.open span:nth-child(2) { opacity: 0; }
+  .hmb.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .sov { display: none; position: fixed; inset: 0; background: rgba(3,14,29,.35); z-index: 90; }
+  .sov.open { display: block; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .sidebar { width: 240px; }
+    .main { padding: 24px; }
+    .setting-label { width: 180px; }
+  }
+  @media (max-width: 768px) {
+    .hmb { display: flex; }
+    .sp { display: none; }
+    .bco { padding: 8px; }
+    .bco-label { display: none; }
+    .sidebar { position: fixed; left: -296px; top: 60px; width: 280px; height: calc(100vh - 60px); z-index: 95; transition: left .25s ease; box-shadow: var(--shadow-md); }
+    .sidebar.open { left: 0; }
+    .main { padding: 16px; }
+    .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
+    .tab { flex-shrink: 0; }
+    .pt { font-size: 22px; }
+    .setting-row { flex-direction: column; gap: 4px; }
+    .setting-label { width: auto; }
+    .estab-picker { flex-wrap: wrap; }
+  }
+  @media (max-width: 480px) {
+    .topbar { padding: 0 12px; gap: 8px; }
+    .co, .divv { display: none; }
+    .tr { gap: 10px; }
+    .section-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<header class="topbar">
+  <div class="tl">
+    <button class="hmb" id="hamburger" onclick="toggleSidebar()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a class="logo" href="dashboard-prototype-fr.html"><div class="logo-icon">P</div><span class="logo-text">PayFit</span></a>
+    <div class="divv"></div>
+    <span class="co">Acme Corp</span>
+  </div>
+  <div class="tr">
+    <div class="sp"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="#8793a1" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="#8793a1" stroke-width="1.5" stroke-linecap="round"/></svg>Rechercher...</div>
+    <button class="bco" onclick="showToast('✨ Assistant activé')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#4040f2" stroke-width="1.2"/><path d="M5 8h6M8 5v6" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round"/></svg><span class="bco-label">Demander à l'Assistant</span></button>
+    <button class="ib"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6l-3 3V5a1 1 0 0 1 1-1z" stroke="#4a5568" stroke-width="1.5" fill="none"/><circle cx="10" cy="9" r="1" fill="#4a5568"/><circle cx="7" cy="9" r="1" fill="#4a5568"/><circle cx="13" cy="9" r="1" fill="#4a5568"/></svg></button>
+    <button class="ib" onclick="window.location='settings-prototype-fr.html'"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" stroke="#4a5568" stroke-width="1.5"/><path d="M16.2 10c0-.3 0-.6-.1-.9l1.9-1.5-1.8-3.1-2.2.9c-.5-.4-1-.7-1.6-.9L12 2H8l-.4 2.5c-.6.2-1.1.5-1.6.9l-2.2-.9L2 7.6l1.9 1.5c-.1.3-.1.6-.1.9s0 .6.1.9L2 12.4l1.8 3.1 2.2-.9c.5.4 1 .7 1.6.9L8 18h4l.4-2.5c.6-.2 1.1-.5 1.6-.9l2.2.9 1.8-3.1-1.9-1.5c.1-.3.1-.6.1-.9z" stroke="#4a5568" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+    <button class="ib" style="position:relative"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 0 1 6 6v3l2 2v1H2v-1l2-2V8a6 6 0 0 1 6-6z" stroke="#4a5568" stroke-width="1.5" fill="none"/><path d="M8 15a2 2 0 0 0 4 0" stroke="#4a5568" stroke-width="1.5"/></svg><span class="nd"></span></button>
+    <div class="av">TM</div>
+  </div>
+</header>
+<div class="sov" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<!-- ─── APP ─── -->
+<div class="app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group">
+      <a class="nav-item" href="dashboard-prototype-fr.html">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10L10 3l7 7" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8.5V17h4v-4h2v4h4V8.5" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tableau de bord
+      </a>
+    </div>
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="8" cy="7" r="3" stroke="#4a5568" stroke-width="1.5"/><path d="M2 17c0-3.31 2.686-6 6-6s6 2.69 6 6" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/><circle cx="15" cy="7" r="2.5" stroke="#4a5568" stroke-width="1.5"/><path d="M17 13c1.5.5 3 1.8 3 4" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Collaborateurs
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="employees-prototype-fr.html">Liste des collaborateurs</a>
+        <a class="nav-item nav-sub" href="#">Nouvelles embauches</a>
+        <a class="nav-item nav-sub" href="#">Congés</a>
+        <a class="nav-item nav-sub" href="#">Rémunération</a>
+        <a class="nav-item nav-sub" href="bonuses-prototype-fr.html">Primes</a>
+      </div>
+    </div>
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="12" rx="2" stroke="#4a5568" stroke-width="1.5"/><path d="M6 5V4a4 4 0 0 1 8 0v1" stroke="#4a5568" stroke-width="1.5"/><path d="M10 11v2M8 12h4" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Traiter la paie
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="payroll-prototype-fr.html">Vérifier et clôturer la paie</a>
+        <a class="nav-item nav-sub" href="#">Payer les collaborateurs</a>
+      </div>
+    </div>
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="7" width="14" height="11" rx="1.5" stroke="#4040f2" stroke-width="1.5"/><path d="M7 7V5a3 3 0 0 1 6 0v2" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round"/><rect x="8" y="11" width="4" height="3" rx="1" stroke="#4040f2" stroke-width="1.2"/></svg>
+        Entreprise
+        <svg class="nav-chevron open" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group open">
+        <a class="nav-item nav-sub" href="#">Journaux de paie</a>
+        <a class="nav-item nav-sub" href="#">Analyses et exports</a>
+        <a class="nav-item nav-sub active" href="company-policies-prototype-fr.html">Politiques d'entreprise</a>
+        <a class="nav-item nav-sub" href="#">Dépôts HMRC</a>
+      </div>
+    </div>
+    <div class="nav-group">
+      <a class="nav-item nav-parent" href="#" onclick="toggleGroup(event,this)">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M6 2h8l4 4v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="#4a5568" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 2v4h4" stroke="#4a5568" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 9h4M8 13h6" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Documents
+        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="nav-sub-group">
+        <a class="nav-item nav-sub" href="#">Liste des documents</a>
+        <a class="nav-item nav-sub" href="#">Signature électronique</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="ph">
+      <h1 class="pt">Politiques d'entreprise</h1>
+      <p class="ps">Configurez les politiques de paie, d'absence, de primes et d'avantages pour chaque établissement.</p>
+    </div>
+
+    <!-- ESTABLISHMENT PICKER -->
+    <div class="estab-picker">
+      <div class="estab-select-wrap">
+        <select class="estab-select" id="estabSelect" onchange="switchEstablishment(this.value)">
+          <option value="bistrot">Bistrot du Marché – Paris 2e</option>
+          <option value="assiette">L'Assiette d'Or – Paris 8e</option>
+          <option value="terrasse">La Terrasse Verte – Lyon 6e</option>
+        </select>
+        <div class="estab-select-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="#8793a1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+
+    </div>
+
+    <!-- POLICY TABS -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchPolicyTab(this, 'payroll')">Paie</div>
+      <div class="tab" onclick="switchPolicyTab(this, 'absences')">Absences</div>
+      <div class="tab" onclick="switchPolicyTab(this, 'bonuses')">Primes</div>
+      <div class="tab" onclick="switchPolicyTab(this, 'benefits')">Avantages</div>
+    </div>
+
+    <!-- PAYROLL SETTINGS CONTENT -->
+    <div id="payrollContent">
+
+      <!-- SECTION: Payment and payslips -->
+      <div class="settings-section" id="sec-payment">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-title-icon" style="background: #ebe9fe;">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="13" rx="2" stroke="#4040f2" stroke-width="1.5"/><path d="M2 8h16" stroke="#4040f2" stroke-width="1.5"/><path d="M6 12h3" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            Paiement et bulletins de paie
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-ghost btn-sm" onclick="openCopyModal('payment')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M10 4V2.5A1.5 1.5 0 0 0 8.5 1h-6A1.5 1.5 0 0 0 1 2.5v6A1.5 1.5 0 0 0 2.5 10H4" stroke="currentColor" stroke-width="1.2"/></svg>
+              Copier depuis...
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="toggleEdit('payment')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10.5 1.5l2 2-8 8H2.5v-2l8-8z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="section-body" id="body-payment">
+          <div class="setting-row">
+            <div class="setting-label">La paie est traitée</div>
+            <div class="setting-value">Manuellement</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Manuellement</option><option>Automatiquement</option></select></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Date de paiement</div>
+            <div class="setting-value">27/11/2026 <span class="sub">Généralement le dernier vendredi du mois</span></div>
+            <div class="edit-row"><input class="edit-input" type="text" value="27/11/2026 - généralement le dernier vendredi du mois"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Mode de paiement</div>
+            <div class="setting-value">Virement bancaire manuel</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Virement bancaire manuel</option><option>Prélèvement SEPA</option><option>Chèque</option></select></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Bulletins de paie</div>
+            <div class="setting-value">Simplement stockés</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Simplement stockés</option><option>Envoyés par email</option><option>Stockés et envoyés par email</option></select></div>
+          </div>
+        </div>
+        <div class="edit-footer" id="footer-payment">
+          <button class="btn btn-secondary btn-sm" onclick="cancelEdit('payment')">Annuler</button>
+          <button class="btn btn-primary btn-sm" onclick="saveEdit('payment')">Enregistrer les modifications</button>
+        </div>
+      </div>
+
+      <!-- SECTION: Employee settings -->
+      <div class="settings-section" id="sec-employee">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-title-icon" style="background: #e3fcef;">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="#00875a" stroke-width="1.5"/><path d="M3 18c0-3.87 3.134-7 7-7s7 3.13 7 7" stroke="#00875a" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            Paramètres des collaborateurs
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-ghost btn-sm" onclick="openCopyModal('employee')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M10 4V2.5A1.5 1.5 0 0 0 8.5 1h-6A1.5 1.5 0 0 0 1 2.5v6A1.5 1.5 0 0 0 2.5 10H4" stroke="currentColor" stroke-width="1.2"/></svg>
+              Copier depuis...
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="toggleEdit('employee')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10.5 1.5l2 2-8 8H2.5v-2l8-8z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="section-body" id="body-employee">
+          <div class="setting-row">
+            <div class="setting-label">Planning</div>
+            <div class="setting-value">Fixe</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Fixe</option><option>Flexible</option><option>Par équipe</option></select></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Heures travaillées par semaine</div>
+            <div class="setting-value">40 heures</div>
+            <div class="edit-row"><input class="edit-input" type="text" value="40 heures"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Le rattrapage de salaire pour début tardif est payé</div>
+            <div class="setting-value">Si je décide de le faire quand j'ajoute un collaborateur</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Si je décide de le faire quand j'ajoute un collaborateur</option><option>Toujours</option><option>Jamais</option></select></div>
+          </div>
+        </div>
+        <div class="edit-footer" id="footer-employee">
+          <button class="btn btn-secondary btn-sm" onclick="cancelEdit('employee')">Annuler</button>
+          <button class="btn btn-primary btn-sm" onclick="saveEdit('employee')">Enregistrer les modifications</button>
+        </div>
+      </div>
+
+      <!-- SECTION: Calculation preferences -->
+      <div class="settings-section" id="sec-calculation">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-title-icon" style="background: #fff4e5;">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="#ff8b00" stroke-width="1.5"/><path d="M7 6h6M7 10h6M7 14h3" stroke="#ff8b00" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </div>
+            Préférences de calcul
+          </div>
+          <div class="section-actions">
+            <button class="btn btn-ghost btn-sm" onclick="openCopyModal('calculation')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M10 4V2.5A1.5 1.5 0 0 0 8.5 1h-6A1.5 1.5 0 0 0 1 2.5v6A1.5 1.5 0 0 0 2.5 10H4" stroke="currentColor" stroke-width="1.2"/></svg>
+              Copier depuis...
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="toggleEdit('calculation')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10.5 1.5l2 2-8 8H2.5v-2l8-8z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+              Modifier
+            </button>
+          </div>
+        </div>
+        <div class="section-body" id="body-calculation">
+          <div class="setting-row">
+            <div class="setting-label">Nombre de jours ouvrables pour l'année</div>
+            <div class="setting-value">260 jours</div>
+            <div class="edit-row"><input class="edit-input" type="text" value="260 jours"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Taux quotidien pour la rémunération de base</div>
+            <div class="setting-value">Basé sur 260 jours ouvrables pour l'année</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Basé sur 260 jours ouvrables pour l'année</option><option>Basé sur 365 jours calendaires</option><option>Basé sur les jours travaillés réels par mois</option></select></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Taux quotidien pour les congés payés</div>
+            <div class="setting-value">Basé sur le nombre de jours ouvrables de chaque mois</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Basé sur le nombre de jours ouvrables de chaque mois</option><option>Basé sur 30 jours calendaires</option><option>Basé sur 26 jours ouvrables</option></select></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">Préférence de calcul des cotisations dirigeant</div>
+            <div class="setting-value">Calculer les cotisations par paie</div>
+            <div class="edit-row"><select class="edit-select"><option selected>Calculer les cotisations par paie</option><option>Calcul annuel des cotisations</option></select></div>
+          </div>
+        </div>
+        <div class="edit-footer" id="footer-calculation">
+          <button class="btn btn-secondary btn-sm" onclick="cancelEdit('calculation')">Annuler</button>
+          <button class="btn btn-primary btn-sm" onclick="saveEdit('calculation')">Enregistrer les modifications</button>
+        </div>
+      </div>
+
+
+
+    </div><!-- /payrollContent -->
+
+    <!-- ABSENCES TAB -->
+    <div id="absencesContent" style="display:none;">
+      <div class="info-banner">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0052cc" stroke-width="1.2"/><path d="M8 7v4" stroke="#0052cc" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="#0052cc"/></svg>
+        Les politiques d'absence vous permettent de configurer les types de congés, les règles d'accumulation et les workflows d'approbation par établissement.
+      </div>
+      <div class="settings-section">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-title-icon" style="background:#ebe9fe;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="14" rx="2" stroke="#4040f2" stroke-width="1.5"/><path d="M7 2v4M13 2v4M3 9h14" stroke="#4040f2" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            Types de congés & accumulation
+          </div>
+          <div class="section-actions"><button class="btn btn-secondary btn-sm" onclick="showToast('Bientôt disponible')">Modifier</button></div>
+        </div>
+        <div class="section-body" id="body-absences">
+          <div class="setting-row"><div class="setting-label">Congés annuels</div><div class="setting-value">—</div></div>
+          <div class="setting-row"><div class="setting-label">Congé maladie</div><div class="setting-value">—</div></div>
+          <div class="setting-row"><div class="setting-label">Congé parental</div><div class="setting-value">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BONUSES TAB -->
+    <div id="bonusesContent" style="display:none;">
+      <div class="info-banner">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0052cc" stroke-width="1.2"/><path d="M8 7v4" stroke="#0052cc" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="#0052cc"/></svg>
+        Configurez les politiques de primes incluant les types, la fréquence et les règles d'éligibilité par établissement.
+      </div>
+      <div class="settings-section">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-title-icon" style="background:#fff4e5;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.09 4.26 4.71.69-3.4 3.32.8 4.69L10 12.77l-4.2 2.19.8-4.69-3.4-3.32 4.71-.69L10 2z" stroke="#ff8b00" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+            Types de primes
+          </div>
+          <div class="section-actions"><button class="btn btn-secondary btn-sm" onclick="showToast('Bientôt disponible')">Modifier</button></div>
+        </div>
+        <div class="section-body" id="body-bonuses">
+          <div class="setting-row"><div class="setting-label">13e mois</div><div class="setting-value">—</div></div>
+          <div class="setting-row"><div class="setting-label">Prime de performance</div><div class="setting-value">—</div></div>
+          <div class="setting-row"><div class="setting-label">Prime d'ancienneté</div><div class="setting-value">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BENEFITS TAB -->
+    <div id="benefitsContent" style="display:none;">
+      <div class="info-banner">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#0052cc" stroke-width="1.2"/><path d="M8 7v4" stroke="#0052cc" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="#0052cc"/></svg>
+        Gérez les packages d'avantages incluant l'assurance maladie, les plans de retraite et autres avantages par établissement.
+      </div>
+      <div class="settings-section">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-title-icon" style="background:#e3fcef;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 18s-7-4.35-7-9.5C3 5.46 5.46 3 8.5 3c1.74 0 3.41.81 4.5 2.09A5.99 5.99 0 0 1 17.5 3C20.54 3 23 5.46 23 8.5 23 13.65 16 18 16 18" stroke="#00875a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(-3, 0) scale(0.85)"/></svg></div>
+            Packages d'avantages
+          </div>
+          <div class="section-actions"><button class="btn btn-secondary btn-sm" onclick="showToast('Bientôt disponible')">Modifier</button></div>
+        </div>
+        <div class="section-body" id="body-benefits">
+          <div class="setting-row"><div class="setting-label">Assurance maladie (mutuelle)</div><div class="setting-value">—</div></div>
+          <div class="setting-row"><div class="setting-label">Chèques-restaurant</div><div class="setting-value">—</div></div>
+          <div class="setting-row"><div class="setting-label">Transports</div><div class="setting-value">—</div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ─── COPY FROM MODAL ─── -->
+<div class="modal-overlay" id="copyModal" onclick="if(event.target===this)closeCopyModal()">
+  <div class="modal">
+    <div class="modal-title">Copier les paramètres depuis un autre établissement</div>
+    <div class="modal-subtitle">Sélectionnez l'établissement dont vous souhaitez appliquer les <strong id="copySectionName">paramètres de paiement</strong> à l'établissement actuel. Cela écrasera les valeurs actuelles.</div>
+    <div class="modal-field">
+      <label>Copier depuis</label>
+      <select id="copySourceSelect" onchange="updateCopyPreview()">
+        <!-- options populated dynamically -->
+      </select>
+    </div>
+    <div class="copy-preview" id="copyPreview">
+      <!-- populated dynamically -->
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeCopyModal()">Annuler</button>
+      <button class="btn btn-primary" onclick="applyCopy()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="4" y="4" width="9" height="9" rx="1.5" stroke="white" stroke-width="1.2"/><path d="M10 4V2.5A1.5 1.5 0 0 0 8.5 1h-6A1.5 1.5 0 0 0 1 2.5v6A1.5 1.5 0 0 0 2.5 10H4" stroke="white" stroke-width="1.2"/></svg>
+        Appliquer les paramètres
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+<script>
+// ─── DATA ───
+const establishments = {
+  bistrot: {
+    name: 'Bistrot du Marché – Paris 2e',
+    employees: 34,
+    payment: {
+      'La paie est traitée': 'Manuellement',
+      'Date de paiement': '27/11/2026 - généralement le dernier vendredi du mois',
+      'Mode de paiement': 'Virement bancaire manuel',
+      'Bulletins de paie': 'Simplement stockés'
+    },
+    employee: {
+      'Planning': 'Fixe',
+      'Heures travaillées par semaine': '40 heures',
+      'Le rattrapage de salaire pour début tardif est payé': 'Si je décide de le faire quand j\'ajoute un collaborateur'
+    },
+    calculation: {
+      'Nombre de jours ouvrables pour l\'année': '260 jours',
+      'Taux quotidien pour la rémunération de base': 'Basé sur 260 jours ouvrables pour l\'année',
+      'Taux quotidien pour les congés payés': 'Basé sur le nombre de jours ouvrables de chaque mois',
+      'Préférence de calcul des cotisations dirigeant': 'Calculer les cotisations par paie'
+    },
+    absences: {
+      'Congés annuels': '25 jours / an - Accumulés mensuellement – 2,08 jours/mois',
+      'Congé maladie': 'Légal - Basé sur la politique de l\'entreprise',
+      'Congé parental': 'Légal + 2 semaines améliorées'
+    },
+    bonuses: {
+      '13e mois': 'Activé - Payé en décembre – au prorata pour les nouveaux arrivants',
+      'Prime de performance': 'Activée - Trimestrielle – basée sur les objectifs individuels',
+      'Prime d\'ancienneté': 'Désactivée'
+    },
+    benefits: {
+      'Assurance maladie (mutuelle)': 'Alan – Plan de base - 50% de cotisation patronale',
+      'Chèques-restaurant': 'Swile – 9,00 € / jour - 60% de cotisation patronale',
+      'Transports': '50% de remboursement Navigo'
+    }
+  },
+  assiette: {
+    name: "L'Assiette d'Or – Paris 8e",
+    employees: 18,
+    payment: {
+      'La paie est traitée': 'Automatiquement',
+      'Date de paiement': '25/11/2026 - généralement le 25 du mois',
+      'Mode de paiement': 'Prélèvement SEPA',
+      'Bulletins de paie': 'Envoyés par email'
+    },
+    employee: {
+      'Planning': 'Flexible',
+      'Heures travaillées par semaine': '35 heures',
+      'Le rattrapage de salaire pour début tardif est payé': 'Toujours'
+    },
+    calculation: {
+      'Nombre de jours ouvrables pour l\'année': '252 jours',
+      'Taux quotidien pour la rémunération de base': 'Basé sur les jours travaillés réels par mois',
+      'Taux quotidien pour les congés payés': 'Basé sur 30 jours calendaires',
+      'Préférence de calcul des cotisations dirigeant': 'Calcul annuel des cotisations'
+    },
+    absences: {
+      'Congés annuels': '30 jours / an - Accumulés mensuellement – 2,5 jours/mois',
+      'Congé maladie': 'Amélioré - 100% du salaire pendant 3 mois',
+      'Congé parental': 'Légal + 4 semaines améliorées'
+    },
+    bonuses: {
+      '13e mois': 'Activé - Payé en novembre',
+      'Prime de performance': 'Activée - Annuelle – basée sur les objectifs d\'équipe',
+      'Prime d\'ancienneté': 'Activée - Après 3 ans d\'ancienneté'
+    },
+    benefits: {
+      'Assurance maladie (mutuelle)': 'Alan – Plan premium - 70% de cotisation patronale',
+      'Chèques-restaurant': 'Swile – 11,00 € / jour - 60% de cotisation patronale',
+      'Transports': '100% de remboursement Navigo'
+    }
+  },
+  terrasse: {
+    name: 'La Terrasse Verte – Lyon 6e',
+    employees: 12,
+    payment: {
+      'La paie est traitée': 'Manuellement',
+      'Date de paiement': '30/11/2026 - généralement le dernier jour du mois',
+      'Mode de paiement': 'Virement bancaire manuel',
+      'Bulletins de paie': 'Stockés et envoyés par email'
+    },
+    employee: {
+      'Planning': 'Par équipe',
+      'Heures travaillées par semaine': '39 heures',
+      'Le rattrapage de salaire pour début tardif est payé': 'Jamais'
+    },
+    calculation: {
+      'Nombre de jours ouvrables pour l\'année': '260 jours',
+      'Taux quotidien pour la rémunération de base': 'Basé sur 260 jours ouvrables pour l\'année',
+      'Taux quotidien pour les congés payés': 'Basé sur 26 jours ouvrables',
+      'Préférence de calcul des cotisations dirigeant': 'Calculer les cotisations par paie'
+    },
+    absences: {
+      'Congés annuels': '25 jours / an - Accumulés mensuellement – 2,08 jours/mois',
+      'Congé maladie': 'Légal - Basé sur la politique de l\'entreprise',
+      'Congé parental': 'Légal uniquement'
+    },
+    bonuses: {
+      '13e mois': 'Désactivé',
+      'Prime de performance': 'Activée - Mensuelle – basée sur le chiffre d\'affaires du restaurant',
+      'Prime d\'ancienneté': 'Activée - Après 2 ans d\'ancienneté'
+    },
+    benefits: {
+      'Assurance maladie (mutuelle)': 'Alan – Plan de base - 50% de cotisation patronale',
+      'Chèques-restaurant': 'Pas de chèques-restaurant - Repas du personnel fournis sur place',
+      'Transports': '50% de remboursement TCL'
+    }
+  }
+};
+
+let currentEstab = 'bistrot';
+let currentCopySection = '';
+
+// ─── TOAST ───
+function showToast(msg) {
+  const el = document.getElementById('toast-el');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ─── TAB SWITCHING ───
+function switchPolicyTab(el, tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['payroll','absences','bonuses','benefits'].forEach(id => {
+    document.getElementById(id + 'Content').style.display = id === tab ? 'block' : 'none';
+  });
+}
+
+// ─── ESTABLISHMENT SWITCHING ───
+function switchEstablishment(val) {
+  currentEstab = val;
+  const estab = establishments[val];
+  if (!estab) return;
+
+  // Optional: update employee count badge if present in DOM
+  const countEl = document.getElementById('estabEmployeeCount');
+  if (countEl) countEl.textContent = estab.employees + ' collaborateurs';
+
+  // Update all policy sections (all 4 tabs)
+  updateSectionValues('payment', estab.payment);
+  updateSectionValues('employee', estab.employee);
+  updateSectionValues('calculation', estab.calculation);
+  updateSectionValues('absences', estab.absences);
+  updateSectionValues('bonuses', estab.bonuses);
+  updateSectionValues('benefits', estab.benefits);
+
+  // Cancel any active edits
+  ['payment','employee','calculation'].forEach(cancelEdit);
+
+  showToast('📍 Basculement vers ' + estab.name.split(' – ')[0]);
+}
+
+function updateSectionValues(section, data) {
+  const body = document.getElementById('body-' + section);
+  if (!body || !data) return;
+  const rows = body.querySelectorAll('.setting-row');
+  const keys = Object.keys(data);
+  rows.forEach((row, i) => {
+    if (keys[i]) {
+      const valEl = row.querySelector('.setting-value');
+      if (!valEl) return;
+      const val = data[keys[i]];
+      // Handle values that include a secondary description after " - "
+      if (typeof val === 'string' && val.includes(' - ')) {
+        const parts = val.split(' - ');
+        const main = parts[0];
+        const sub = parts.slice(1).join(' - ');
+        // Preserve Enabled/Disabled coloring for bonus-style rows
+        if (main === 'Activé') {
+          valEl.innerHTML = '<span style="color:var(--green);font-weight:500;">Activé</span>' + (sub ? ' <span class="sub">' + sub.charAt(0).toUpperCase() + sub.slice(1) + '</span>' : '');
+        } else if (main === 'Désactivé') {
+          valEl.innerHTML = '<span style="color:var(--text-tertiary);font-weight:500;">Désactivé</span>';
+        } else {
+          valEl.innerHTML = main + ' <span class="sub">' + sub.charAt(0).toUpperCase() + sub.slice(1) + '</span>';
+        }
+      } else {
+        if (val === 'Activé') {
+          valEl.innerHTML = '<span style="color:var(--green);font-weight:500;">Activé</span>';
+        } else if (val === 'Désactivé') {
+          valEl.innerHTML = '<span style="color:var(--text-tertiary);font-weight:500;">Désactivé</span>';
+        } else {
+          valEl.textContent = val;
+        }
+      }
+      // Update edit inputs if any
+      const editRow = row.querySelector('.edit-row');
+      if (editRow) {
+        const input = editRow.querySelector('input');
+        const select = editRow.querySelector('select');
+        if (input) input.value = val;
+        if (select) {
+          for (let opt of select.options) {
+            if (opt.value === val || opt.textContent === val) { opt.selected = true; break; }
+          }
+        }
+      }
+    }
+  });
+}
+
+// ─── EDIT TOGGLE ───
+function toggleEdit(section) {
+  const body = document.getElementById('body-' + section);
+  const footer = document.getElementById('footer-' + section);
+  const isEditing = body.classList.contains('section-editing');
+  if (isEditing) {
+    cancelEdit(section);
+  } else {
+    body.classList.add('section-editing');
+    footer.classList.add('active');
+  }
+}
+
+function cancelEdit(section) {
+  const body = document.getElementById('body-' + section);
+  const footer = document.getElementById('footer-' + section);
+  if (body) body.classList.remove('section-editing');
+  if (footer) footer.classList.remove('active');
+}
+
+function saveEdit(section) {
+  const body = document.getElementById('body-' + section);
+  const rows = body.querySelectorAll('.setting-row');
+  rows.forEach(row => {
+    const valEl = row.querySelector('.setting-value');
+    const editRow = row.querySelector('.edit-row');
+    if (editRow) {
+      const input = editRow.querySelector('input');
+      const select = editRow.querySelector('select');
+      const checkbox = editRow.querySelector('input[type="checkbox"]');
+      if (checkbox) {
+        valEl.innerHTML = checkbox.checked
+          ? '<span style="color:var(--green);font-weight:500;">Activé</span>'
+          : '<span style="color:var(--text-tertiary);font-weight:500;">Désactivé</span>';
+      } else if (select) {
+        const val = select.options[select.selectedIndex].textContent;
+        if (valEl.querySelector('.sub')) {
+          valEl.childNodes[0].textContent = val;
+        } else {
+          valEl.textContent = val;
+        }
+      } else if (input) {
+        const val = input.value;
+        if (val.includes(' - ')) {
+          const parts = val.split(' - ');
+          valEl.innerHTML = parts[0] + '<span class="sub">' + parts[1].charAt(0).toUpperCase() + parts[1].slice(1) + '</span>';
+        } else {
+          valEl.textContent = val;
+        }
+      }
+    }
+  });
+  cancelEdit(section);
+  showToast('✅ Paramètres enregistrés avec succès');
+}
+
+// ─── COPY FROM MODAL ───
+function openCopyModal(section) {
+  currentCopySection = section;
+  const sectionNames = { payment: 'Paiement et bulletins de paie', employee: 'Paramètres des collaborateurs', calculation: 'Préférences de calcul' };
+  document.getElementById('copySectionName').textContent = sectionNames[section] || section;
+
+  // Populate source select (exclude current)
+  const select = document.getElementById('copySourceSelect');
+  select.innerHTML = '';
+  Object.keys(establishments).forEach(key => {
+    if (key !== currentEstab) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = establishments[key].name;
+      select.appendChild(opt);
+    }
+  });
+
+  updateCopyPreview();
+  document.getElementById('copyModal').classList.add('open');
+}
+
+function closeCopyModal() {
+  document.getElementById('copyModal').classList.remove('open');
+}
+
+function updateCopyPreview() {
+  const source = document.getElementById('copySourceSelect').value;
+  if (!source) return;
+  const data = establishments[source][currentCopySection];
+  const container = document.getElementById('copyPreview');
+  let html = '<div class="copy-preview-title">Paramètres qui seront appliqués</div>';
+  for (const [key, val] of Object.entries(data)) {
+    html += `<div class="copy-preview-row"><span class="label">${key}</span><span class="value">${val.split(' - ')[0]}</span></div>`;
+  }
+  container.innerHTML = html;
+}
+
+function applyCopy() {
+  const source = document.getElementById('copySourceSelect').value;
+  const data = establishments[source][currentCopySection];
+
+  // Update current establishment data
+  establishments[currentEstab][currentCopySection] = { ...data };
+
+  // Update the UI
+  updateSectionValues(currentCopySection, data);
+  closeCopyModal();
+  showToast('✅ Paramètres copiés depuis ' + establishments[source].name.split(' – ')[0]);
+}
+
+// ─── SIDEBAR ───
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+function toggleGroup(e, el) {
+  e.preventDefault();
+  e.stopPropagation();
+  var group = el.parentElement.querySelector('.nav-sub-group');
+  if (!group) return;
+  var isOpen = group.classList.contains('open');
+  document.querySelectorAll('.nav-sub-group').forEach(g => g.classList.remove('open'));
+  document.querySelectorAll('.nav-chevron').forEach(c => c.classList.remove('open'));
+  if (!isOpen) {
+    group.classList.add('open');
+    var chev = el.querySelector('.nav-chevron');
+    if (chev) chev.classList.add('open');
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCopyModal(); });
+
+// ─── INITIAL LOAD ───
+document.addEventListener('DOMContentLoaded', () => {
+  const select = document.getElementById('estabSelect');
+  const initial = (select && select.value) || 'bistrot';
+  switchEstablishment(initial);
+});
+</script>
+</body>
+</html>
